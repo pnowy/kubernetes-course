@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-stateful-set
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: app-stateful-set
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: app-stateful-set
+spec: 
+  replicas: 3
+  serviceName: app-stateful-set
+  selector:
+    matchLabels:
+      app: app-stateful-set
+  volumeClaimTemplates:
+    - metadata:
+        name: app-stateful-set-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 100Mi
+  updateStrategy:
+    type: OnDelete
+  template:
+    metadata:
+      labels:
+        app: app-stateful-set
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: app
+          image: app:1.1.0
+          readinessProbe:
+            httpGet:
+              port: 5000
+              path: "/health/readiness"
+          livenessProbe:
+            httpGet:
+              port: 5000
+              path: "/health/liveness"
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+          ports:
+            - containerPort: 5000
+              name: http
+          volumeMounts:
+            - mountPath: /app/data
+              name: app-stateful-set-data
+      
+      

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: toolbox-config
+data:
+  kubeapi.sh: |
+    # Point to the internal API server hostname
+    APISERVER=https://kubernetes.default.svc
+    # Path to ServiceAccount token
+    SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+    # Read this Pod's namespace
+    NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+    # Read the ServiceAccount bearer token
+    TOKEN=$(cat ${SERVICEACCOUNT}/token)
+    # Reference the internal certificate authority (CA)
+    CACERT=${SERVICEACCOUNT}/ca.crt
+    # Explore the API with TOKEN
+    curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}$1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toolbox
+spec:
+  terminationGracePeriodSeconds: 0
+  containers:
+    - name: toolbox
+      imagePullPolicy: Always
+      workingDir: /scripts
+      image: pnowy/toolbox:1.0.0
+      command: [ 'sh', '-c', 'echo "Hello, Kubernetes!" && sleep infinity' ]
+      volumeMounts:
+        - mountPath: /scripts
+          name: toolbox-config
+  volumes:
+    - name: toolbox-config
+      configMap:
+        name: toolbox-config
+        defaultMode: 0755

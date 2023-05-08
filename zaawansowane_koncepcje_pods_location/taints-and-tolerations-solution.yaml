@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo
+  labels:
+    app: podinfo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        app: podinfo
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: pool
+                    operator: In
+                    values:
+                      - m02
+      tolerations:
+        - key: role
+          operator: Equal
+          value: podinfo
+          effect: NoSchedule
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: podinfo
+          image: stefanprodan/podinfo:6.4.0
+# kubectl taint nodes minikube-m02 role=podinfo:NoSchedule
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+  labels:
+    app: httpbin
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      labels:
+        app: httpbin
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: httpbin
+          image: kennethreitz/httpbin:latest

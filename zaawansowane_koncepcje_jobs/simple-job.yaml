@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: simple-job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: toolbox
+          image: pnowy/toolbox:1.0.0
+          command: [ 'sh', '-c', 'echo "Hello, Kubernetes! Executing my job..."' ]

@@ -1,0 +1,64 @@
+- Wprowadzenie do kursu
+    - Podstawowe informacje o kursie
+    - Agenda
+- Kubernetes - wprowadzenie 
+    - Wprowadzenie do orkiestracji kontenerów
+    - Kubernetes - podstawowe informacje
+    - Kubernetes - architektura
+    - Kubernetes - rodzaje instalacji
+    - Kubectl - podstawowe informacje
+    - Instalacja Windows
+    - Instalacja Linux
+    - Instalacja MacOS
+    - Uruchamianie aplikacji (imperatywnie - komendy)
+    - Uruchamianie aplikacji (deklaratywnie - pliki)
+- Postawowe koncepcje i obiekty (część 1)
+    - Kubectl alias - jak ułatwić sobie pracę
+    - Pody - wprowadzenie (część teoretyczna)
+    - Pody - wprowadzenie (część praktyczna)
+    - Konfiguracja podów
+    - Labels and selectors
+    - Annotations
+    - Deployments
+    - Services
+    - Kubectl vs narzędzia graficzne
+    - Port-forward, proxy i dodatkowe komendy
+    - Kubectl explain czyli dokumentacja obiektów
+- Podstawowe koncepcje i obiekty (część 2)
+    - Przestrzenie nazw (namespaces)
+    - Namespace a użycie DNS
+    - Secrets - wprowadzenie
+    - Secrets - praktyka
+    - Pods resources
+    - Probes - teoria
+    - Probes - praktyka
+    - Deployments - konfiguracja
+- Zaawansowane koncepcje i obiekty (część 1)
+    - Volumes
+    - Storage classes
+    - Użycie ConfigMap oraz Secret na dysku
+    - Rodzaje serwisów
+    - Ingress
+    - Ingress TLS (SSL)
+    - Init containers
+    - StatefulSet - wprowadzenie
+    - Headless service
+    - StatefulSet - praktyka
+- Zarządzanie manifestami
+    - Helm - wprowadzenie
+    - Helm - instalacja aplikacji
+    - Helm - parametryzacja (ćwiczenie)
+    - Helm - własny chart
+- Zaawansowane koncepcje i obiekty (część 2)
+    - Job
+    - CronJob
+    - API groups
+    - Service accounts
+    - RBAC (Role Based Access Control)
+    - DaemonSet
+    - Alokacja podów na konkretnych nodach - teoria
+    - Alokacja podów na konkretnych nodach - praktyka
+- Środowiska w chmurze (cloud)
+    - Google Kubernetes Engine (GKE)
+- Podsumowanie kursu
+    - Co dalej i gdzie szukać dodatkowych informacji

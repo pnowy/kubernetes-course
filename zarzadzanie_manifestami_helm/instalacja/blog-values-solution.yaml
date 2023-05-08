@@ -1,0 +1,9 @@
+wordpressUsername: admin
+wordpressPassword: password
+mariadb:
+  auth:
+    rootPassword: secretpassword
+
+wordpressBlogName: Kurs Kubernetesa!
+memcached:
+  enabled: true

@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: probability-cronjob
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 6 # Specifies the number of retries before marking this job failed. Defaults to 6
+      completions: 3 # Specifies the desired number of successfully finished pods the job should be run with. Defaults to 1
+      parallelism: 3 # Specifies the maximum desired number of pods the job should run at any given time
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: toolbox
+              image: pnowy/toolbox:1.0.0
+              command:
+                - "/bin/bash"
+                - "-c"
+                - |
+                  #!/bin/bash
+                  # Function to generate a random number between 1 and 100
+                  random_number() {
+                    echo $((RANDOM % 100 + 1))
+                  }
+                  # Function to generate an error with a given probability
+                  generate_random_error() {
+                    local probability=$1
+                    local rand=$(random_number)
+                    if [ "$rand" -le "$probability" ]; then
+                      echo "Error!"
+                      exit 1 # Exit with error code 1
+                    else
+                      echo "Success!"
+                      exit 0 # Exit with success code 0
+                    fi
+                  }
+                  # Set the desired probability of error (change this value to your desired percentage)
+                  probability_of_error=25 # probability of error
+                  generate_random_error $probability_of_error

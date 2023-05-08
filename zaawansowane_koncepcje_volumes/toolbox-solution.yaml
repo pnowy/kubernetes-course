@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toolbox
+spec:
+  terminationGracePeriodSeconds: 0
+  volumes:
+    - name: data
+      hostPath:
+        path: /data
+        type: DirectoryOrCreate
+  containers:
+    - name: toolbox
+      image: pnowy/toolbox:1.0.0
+      workingDir: "/app"
+      command: ["sh", "-c"]
+      args:
+        - mkdir -p /app && echo "Work done $HOSTNAME $(date +%Y-%m-%d_%H-%M-%S)" >> /app/data.txt && sleep infinity
+      volumeMounts:
+        - mountPath: /app
+          name: data
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toolbox2
+spec:
+  terminationGracePeriodSeconds: 0
+  volumes:
+    - name: data
+      hostPath:
+        path: /data
+        type: DirectoryOrCreate
+  containers:
+    - name: toolbox
+      image: pnowy/toolbox:1.0.0
+      workingDir: "/app"
+      command: ["sh", "-c"]
+      args:
+        - mkdir -p /app && echo "Work done $HOSTNAME $(date +%Y-%m-%d_%H-%M-%S)" >> /app/data.txt && sleep infinity
+      volumeMounts:
+        - mountPath: /app
+          name: data

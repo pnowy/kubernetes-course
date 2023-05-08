@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toolbox
+spec:
+  terminationGracePeriodSeconds: 0
+  volumes:
+    - name: xyz
+      emptyDir: {}
+  initContainers:
+    - name: app-checker
+      image: curlimages/curl:8.1.2
+      command: [ 'sh', '-c']
+      env:
+        - name: APP_ENDPOINT
+          value: http://app.default.svc.cluster.local:8080
+      args: # https://yaml-multiline.info/
+        - |
+          echo "Waiting for application... [URL=$APP_ENDPOINT]"
+          attempt_counter=0
+          max_attempts=100
+
+          until $(curl --output /dev/null --silent --head --fail $APP_ENDPOINT); do
+              if [ ${attempt_counter} -eq ${max_attempts} ];then
+                echo "Max attempts reached"
+                exit 1
+              fi
+
+              attempt_counter=$(($attempt_counter+1))
+              echo "Waiting for application..."
+              sleep 1
+          done
+          echo "Application reachable.. finish init container"
+  containers:
+    - name: toolbox
+      image: pnowy/toolbox:1.0.0
+      env:
+        - name: APP_ENDPOINT
+          value: http://app.default.svc.cluster.local:8080
+      command: [ 'sh', '-c']
+      args: # https://yaml-multiline.info/
+        - >-
+          http --json --check-status GET $APP_ENDPOINT/pods/env-vars &&
+          echo "Healthy!" > /tmp/healthy &&
+          sleep infinity
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/healthy
+        initialDelaySeconds: 5
+        periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+  type: ClusterIP
+  selector:
+    app: app-pod
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-pod
+  template:
+    metadata:
+      labels:
+        app: app-pod
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: app
+          image: app:1.0.0
+          readinessProbe:
+            httpGet:
+              port: 5000
+              path: "/health/readiness"
+          livenessProbe:
+            httpGet:
+              port: 5000
+              path: "/health/liveness"
+          startupProbe:
+            httpGet:
+              port: 5000
+              path: "/health/startup"
+            initialDelaySeconds: 60
+            failureThreshold: 6
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+          ports:
+            - containerPort: 5000
+              name: http

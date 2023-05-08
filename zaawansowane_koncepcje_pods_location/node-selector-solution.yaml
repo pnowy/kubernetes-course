@@ -1,0 +1,49 @@
+# minikube delete && minikube start --nodes 4
+# kubectl label node minikube-m02 color=blue && kubectl label node minikube-m03 color=green
+# kubectl label node minikube pool=m01 && kubectl label node minikube-m02 pool=m02 && kubectl label node minikube-m03 pool=m03 && kubectl label node minikube-m04 pool=m04
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo
+  labels:
+    app: podinfo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        app: podinfo
+    spec:
+      nodeSelector:
+        color: blue
+        # pool: m03
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: podinfo
+          image: stefanprodan/podinfo:6.4.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+  labels:
+    app: httpbin
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      labels:
+        app: httpbin
+    spec:
+      nodeSelector:
+        color: green
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: httpbin
+          image: kennethreitz/httpbin:latest

@@ -1,0 +1,5 @@
+.idea/
+app/venv
+Chart.lock
+*.tgz
+_template.yaml

@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo
+  labels:
+    app: podinfo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        app: podinfo
+    spec:
+      #affinity:
+      #  podAntiAffinity:
+      #    requiredDuringSchedulingIgnoredDuringExecution:
+      #      - topologyKey: kubernetes.io/hostname
+      #        labelSelector:
+      #          matchExpressions:
+      #            - key: app
+      #              operator: In
+      #              values:
+      #                - podinfo
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: podinfo
+          image: stefanprodan/podinfo:6.4.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+  labels:
+    app: httpbin
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      labels:
+        app: httpbin
+    spec:
+      #affinity:
+      #  podAffinity:
+      #    requiredDuringSchedulingIgnoredDuringExecution:
+      #      - topologyKey: kubernetes.io/hostname
+      #        labelSelector:
+      #          matchExpressions:
+      #            - key: app
+      #              operator: In
+      #              values:
+      #                - podinfo
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: httpbin
+          image: kennethreitz/httpbin:latest

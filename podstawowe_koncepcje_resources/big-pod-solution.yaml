@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.23.4
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: "400m"
+          memory: "512Mi"
+        requests:
+          cpu: "400m"
+          memory: "512Mi"
+    - name: echo
+      image: busybox:1.28
+      command: ["sh", "-c", 'echo "Hello, Kubernetes!" && sleep 999999']
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+        requests:
+          cpu: "500m"
+          memory: "512Mi"
