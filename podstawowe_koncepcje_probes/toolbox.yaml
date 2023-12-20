@@ -6,7 +6,7 @@ spec:
   containers:
     - name: toolbox
       image: pnowy/toolbox:1.0.0
-      command: [ 'sh', '-c', 'echo "Hello, Kubernetes!" && echo "Healthy!" > /tmp/healthy && sleep infinity' ]
+      command: [ 'sh', '-c', 'echo "Hello, Kubernetes!" && sleep infinity' ]
       resources:
         limits:
           cpu: "200m"
