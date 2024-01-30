@@ -1,0 +1,13 @@
+# eksctl create cluster -f simple-cluster.yaml
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: kurs-kubernetesa
+  region: eu-central-1
+
+nodeGroups:
+  - name: blue
+    instanceType: t2.medium
+    desiredCapacity: 2

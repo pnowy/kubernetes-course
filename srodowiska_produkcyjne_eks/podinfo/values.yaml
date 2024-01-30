@@ -1,0 +1,15 @@
+# helm dep update
+# helm template --namespace podinfo --create-namespace podinfo . > _template.yaml
+# helm upgrade --install --namespace podinfo --create-namespace podinfo .
+podinfo:
+  ingress:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: a68114017542342d39f5ce725e1452f3-1065512075.eu-central-1.elb.amazonaws.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+
+
+# https://cert-manager.io/docs/tutorials/acme/nginx-ingress/

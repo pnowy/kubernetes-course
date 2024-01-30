@@ -1,4 +1,4 @@
-# Klaster w chmurze
+# Klaster w chmurze (GCP)
 
 ## Google Kubernetes Engine
 
