@@ -1,0 +1,31 @@
+
+# helm dep update
+# helm template --namespace ingress-nginx --create-namespace ingress-nginx . > _template.yaml
+# helm upgrade --install --namespace ingress-nginx --create-namespace ingress-nginx .
+ingress-nginx:
+  controller:
+    resources:
+      limits:
+        cpu: 200m
+        memory: 180Mi
+      requests:
+        cpu: 100m
+        memory: 90Mi
+    admissionWebhooks:
+      patchWebhookJob:
+        resources:
+          limits:
+            cpu: 200m
+            memory: 80Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+      createSecretJob:
+        resources:
+          limits:
+            cpu: 200m
+            memory: 80Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+
