@@ -60,5 +60,8 @@
     - Alokacja podów na konkretnych nodach - praktyka
 - Środowiska w chmurze (cloud)
     - Google Kubernetes Engine (GKE)
+    - Elastic Kubernetes Service (EKS)
+- Pozostałe tematy
+    - Dobre praktyki
 - Podsumowanie kursu
     - Co dalej i gdzie szukać dodatkowych informacji
