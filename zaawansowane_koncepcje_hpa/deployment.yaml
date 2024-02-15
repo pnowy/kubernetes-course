@@ -1,0 +1,42 @@
+# minikube image build -t app-server:1.0.0 .
+# kubectl run -i --tty load-generator --rm --image=busybox:1.36.1 --restart=Never -- /bin/sh -c "while sleep 0.6; do wget -q -O- http://app-server/load; done"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-server
+spec:
+  selector:
+    matchLabels:
+      run: app-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: app-server
+    spec:
+      containers:
+        - name: app-server
+          image: app-server:1.0.0
+          env:
+           - name: POD_IP
+             valueFrom:
+               fieldRef:
+                 fieldPath: status.podIP
+          resources:
+            limits:
+              cpu: 50m
+            requests:
+              cpu: 20m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-server
+  labels:
+    run: app-server
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    run: app-server
