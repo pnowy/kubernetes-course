@@ -15,7 +15,7 @@ spec:
             value: /
       backendRefs:
         - name: podinfo
-          namespace: default
+          namespace: nginx-gateway
           port: 8080
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -35,5 +35,5 @@ spec:
             value: /
       backendRefs:
         - name: httpbin
-          namespace: default
+          namespace: nginx-gateway
           port: 8080

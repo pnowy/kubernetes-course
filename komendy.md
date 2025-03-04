@@ -232,5 +232,9 @@ kubectl taint nodes minikube-m02 role=podinfo:NoSchedule
 ### Gateway API
 
 ```
+kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v1.6.1" | kubectl apply -f -
+helm install ngf --create-namespace -n nginx-gateway --version 1.6.1 oci://ghcr.io/nginx/charts/nginx-gateway-fabric
 
+mkcert --key-file key.pem --cert-file cert.pem podinfo.127.0.0.1.nip.io httpbin.127.0.0.1.nip.io
+kubectl create secret tls nginx-gateway-tls --key key.pem --cert cert.pem --namespace nginx-gateway
 ```

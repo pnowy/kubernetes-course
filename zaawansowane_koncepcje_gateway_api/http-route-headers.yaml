@@ -26,5 +26,5 @@ spec:
               - User-Agent
       backendRefs:
         - name: httpbin
-          namespace: default
+          namespace: nginx-gateway
           port: 8080
