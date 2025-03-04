@@ -1,0 +1,34 @@
+traefik:
+  fullnameOverride: traefik
+  deployment:
+    replicas: 1
+  logs:
+    general:
+      level: INFO
+    access:
+      enabled: true
+  ingressRoute:
+    dashboard:
+      enabled: true # -- Create an IngressRoute for the dashboard
+  providers:
+    # disable as ingress controller
+    kubernetesIngress:
+      enabled: false
+    # enable as gateway api controller
+    kubernetesGateway:
+      enabled: true
+  ingressClass:
+    enabled: false
+    isDefaultClass: false
+  ports:
+    web:
+      port: 8000
+      exposedPort: 80
+  gateway:
+    listeners:
+      web:
+        port: 8000
+        protocol: HTTP
+        namespacePolicy: All # Allow the Gateway to expose HTTPRoute from all namespaces
+  service:
+    type: LoadBalancer

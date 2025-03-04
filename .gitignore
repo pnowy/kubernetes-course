@@ -3,3 +3,5 @@ app/venv
 Chart.lock
 *.tgz
 _template.yaml
+key.pem
+cert.pem
