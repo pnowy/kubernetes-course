@@ -1,0 +1,30 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: httpbin
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: nginx-gateway
+  hostnames:
+    - "httpbin.127.0.0.1.nip.io"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: Accept-Language
+                value: es
+            add:
+              - name: X-App-Header
+                value: Kurs kubernetesa
+            remove:
+              - User-Agent
+      backendRefs:
+        - name: httpbin
+          namespace: default
+          port: 8080

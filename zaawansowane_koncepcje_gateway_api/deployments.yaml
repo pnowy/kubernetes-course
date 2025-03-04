@@ -1,0 +1,109 @@
+# kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v1.6.1" | kubectl apply -f -
+# helm install ngf --create-namespace -n nginx-gateway --version 1.6.1 oci://ghcr.io/nginx/charts/nginx-gateway-fabric
+#
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo
+spec:
+  type: ClusterIP
+  selector:
+    app: podinfo
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo
+  labels:
+    app: podinfo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        app: podinfo
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: podinfo
+          image: stefanprodan/podinfo:6.4.0
+          readinessProbe:
+            httpGet:
+              port: http
+              path: "/readyz"
+          livenessProbe:
+            httpGet:
+              port: http
+              path: "/healthz"
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+          ports:
+            - containerPort: 9898
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin
+spec:
+  type: ClusterIP
+  selector:
+    app: httpbin
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+  labels:
+    app: httpbin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      labels:
+        app: httpbin
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: httpbin
+          image: kennethreitz/httpbin:latest
+          readinessProbe:
+            httpGet:
+              port: http
+              path: "/get"
+          livenessProbe:
+            httpGet:
+              port: http
+              path: "/get"
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+          ports:
+            - containerPort: 80
+              name: http

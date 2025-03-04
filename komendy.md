@@ -1,4 +1,3 @@
-
 ## Podstawowe koncepcje
 
 ## [Kubectl cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
@@ -228,4 +227,10 @@ kubectl label node minikube-m02 color=blue            # dodanie label do noda
 kubectl label node minikube-m02 color=blue && kubectl label node minikube-m03 color=green                                                                                     # nadanie labels do node-ów
 kubectl label node minikube pool=m01 && kubectl label node minikube-m02 pool=m02 && kubectl label node minikube-m03 pool=m03 && kubectl label node minikube-m04 pool=m04      # nadanie labels do node-ów
 kubectl taint nodes minikube-m02 role=podinfo:NoSchedule
+```
+
+### Gateway API
+
+```
+
 ```
