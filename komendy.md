@@ -1,4 +1,3 @@
-
 ## Podstawowe koncepcje
 
 ## [Kubectl cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
@@ -228,4 +227,14 @@ kubectl label node minikube-m02 color=blue            # dodanie label do noda
 kubectl label node minikube-m02 color=blue && kubectl label node minikube-m03 color=green                                                                                     # nadanie labels do node-ów
 kubectl label node minikube pool=m01 && kubectl label node minikube-m02 pool=m02 && kubectl label node minikube-m03 pool=m03 && kubectl label node minikube-m04 pool=m04      # nadanie labels do node-ów
 kubectl taint nodes minikube-m02 role=podinfo:NoSchedule
+```
+
+### Gateway API
+
+```
+kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v1.6.1" | kubectl apply -f -
+helm install ngf --create-namespace -n nginx-gateway --version 1.6.1 oci://ghcr.io/nginx/charts/nginx-gateway-fabric
+
+mkcert --key-file key.pem --cert-file cert.pem podinfo.127.0.0.1.nip.io httpbin.127.0.0.1.nip.io
+kubectl create secret tls nginx-gateway-tls --key key.pem --cert cert.pem --namespace nginx-gateway
 ```

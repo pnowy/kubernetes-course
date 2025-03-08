@@ -58,6 +58,8 @@
     - DaemonSet
     - Alokacja podów na konkretnych nodach - teoria
     - Alokacja podów na konkretnych nodach - praktyka
+    - Gateway API (część teoretyczna)
+    - Gateway API (część praktyczna)
 - Środowiska w chmurze (cloud)
     - Google Kubernetes Engine (GKE)
     - Elastic Kubernetes Service (EKS)
