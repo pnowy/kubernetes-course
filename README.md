@@ -1,6 +1,6 @@
 # [Kubernetes od podstaw - dla programistów i nie tylko](https://www.udemy.com/course/kubernetes-od-podstaw-dla-programistow-i-nie-tylko/?referralCode=4AB1DB66CD8879CF5F4B)
 
-> Wersja 2024
+> Wersja 2025
 
 ![logo](./.img/logo.png)
 
