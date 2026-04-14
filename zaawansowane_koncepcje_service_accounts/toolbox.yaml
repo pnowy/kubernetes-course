@@ -22,7 +22,6 @@ kind: Pod
 metadata:
   name: toolbox
 spec:
-  serviceAccountName: test-sa
   terminationGracePeriodSeconds: 0
   containers:
     - name: toolbox

@@ -3,8 +3,9 @@ kind: Pod
 metadata:
   name: echo
 spec:
-  restartPolicy: OnFailure
+  # restartPolicy: OnFailure # default value is Always, next course step is to change it to OnFailure
   containers:
     - name: echo
       image: busybox:1.28
       command: [ 'sh', '-c', 'echo "Hello, Kubernetes!" && sleep 5' ]
+      # command: [ 'sh', '-c', 'echo "Hello, Kubernetes!" && exit 1' ] # restarting test option

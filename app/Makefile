@@ -15,7 +15,7 @@ $(VENV): requirements.txt
 	touch $(VENV)
 
 docker-build:
-	docker build -t app .
+	docker build -t app -t app:1.0.0 .
 
 minikube-build:
 	minikube image build -t app:1.0.0 .
