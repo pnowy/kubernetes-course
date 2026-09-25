@@ -68,9 +68,13 @@ k get svc -o wide                                               # pobranie serwi
 ### Narzędzia graficzne
 
 ```
-minikube dashboard                                              # uruchomienie dashboard na minikube
+k9s -n default                                                  # uruchomienie k9s w namespace default
 minikube addons list                                            # lista addonów minikube
-minikube addons enable metrics-server                           # włączenie addon-a na minikube
+minikube addons enable headlamp                                 # włączenie addonu Headlamp na minikube
+kubectl get pods -n headlamp                                    # pobranie podów z namespace headlamp
+minikube service headlamp -n headlamp                           # uruchomienie usługi Headlamp w przeglądarce
+minikube addons enable metrics-server                           # włączenie addon-a metrics-server na minikube
+kubectl create token headlamp -n headlamp --duration=24h        # utworzenie tokenu dla Headlamp ważnego przez 24 godziny
 ```
 
 ### [Dodatkowe komendy](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
