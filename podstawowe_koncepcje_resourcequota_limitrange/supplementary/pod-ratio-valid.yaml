@@ -1,3 +1,4 @@
+# kubectl create --dry-run=server -f supplementary/pod-ratio-valid.yaml
 apiVersion: v1
 kind: Pod
 metadata:
