@@ -4,7 +4,7 @@
 
 ### Alias (Linux/MacOS)
 
-```
+```bash
 alias k="kubectl"
 alias kctx="kubectx $@"
 alias kns="kubens $@"
@@ -14,7 +14,7 @@ Projekt z aliasami: [https://github.com/ahmetb/kubectl-aliases](https://github.c
 
 ### Pody
 
-```
+```bash
 kubectl run nginx --image nginx:1.25.1                          # uruchom pod nginx w domyślnym namespace
 kubectl get pod nginx -o=jsonpath='{.spec.serviceAccountName}'  # pobierz service account name danego poda
 kubectl get pods                                                # pobierz pody
@@ -29,14 +29,14 @@ kubectl delete pod nginx                                        # usunięcie pod
 
 ### Konfiguracja
 
-```
+```bash
 minikube image build -t app:1.0.0 .                             # zbuduj obraz w kontekście minikube
 minikube image ls                                               # listing obrazów na minikube  
 ```
 
 ### Labels & annotations
 
-```
+```bash
 k get pods --show-labels
 k describe pod nginx
 k get pods -o wide
@@ -51,7 +51,7 @@ k get pods --show-labels --selector 'tier in (frontend,backend)'
 
 ### Deployments
 
-```
+```bash
 kubectl get deployment                                          # pobranie deploymentów
 kubectl get replicaset                                          # pobranie replica set
 kubectl set image deployment/nginx-deployment nginx=nginx:1.25.0    # zmiana obrazu w deploymencie
@@ -59,7 +59,7 @@ kubectl set image deployment/nginx-deployment nginx=nginx:1.25.0    # zmiana obr
 
 ### Services
 
-```
+```bash
 k -it exec toolbox -- bash                                      # interactive shell na konkretnym podzie
 k get svc                                                       # pobranie serwisu
 k get svc -o wide                                               # pobranie serwisu, output wide
@@ -67,7 +67,7 @@ k get svc -o wide                                               # pobranie serwi
 
 ### Narzędzia graficzne
 
-```
+```bash
 k9s -n default                                                  # uruchomienie k9s w namespace default
 minikube addons list                                            # lista addonów minikube
 minikube addons enable headlamp                                 # włączenie addonu Headlamp na minikube
@@ -79,7 +79,7 @@ kubectl create token headlamp -n headlamp --duration=24h        # utworzenie tok
 
 ### [Dodatkowe komendy](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)
 
-```
+```bash
 kubectl port-forward nginx 8079:80                              # forward portu poda nginx (port lokalny / port zdalny)
 kubectl proxy                                                   # proxy do kubernetes API
 minikube service app                                            # tunelowanie z wykorzystaniem minikube
@@ -94,7 +94,7 @@ kubectl logs -l tier=backend -f                                 # logi za pomoc�
 
 [Narzędzie Kubectx](https://github.com/ahmetb/kubectx)
 
-```
+```bash
 kubectl get namespace                                           # pobranie namespace
 kubectl get pods -n kube-system                                 # pobranie podów z konkretnego namespace
 kubectl create namespace blue                                   # utworzenie namespace o nazwie 'blue'
@@ -121,14 +121,14 @@ kubectl create secret generic admin-cred --from-env-file test.env               
 
 ### Pod resources & probes
 
-```
+```bash
 kubectl get nodes                                               # pobierz node-y
 kubectl describe node minikube                                  # opisz konkretny node 
 ```
 
 ### Konfiguracja deploymentu
 
-```
+```bash
 minikube image build -t app:1.1.0 .                                 # budowa obrazu w wersji 1.1.0 dla kontekstu minikube
 kubectl rollout status deployment/app-deployment                    # status wdrożenia deploymentu
 kubectl rollout history deployment/app-deployment                   # historia rewizji deploymentu
@@ -139,9 +139,18 @@ kubectl rollout pause deployment/app-deployment                     # wstrzymani
 kubectl rollout resume deployment/app-deployment                    # wznowienie wdrożeń danego deploymentu
 ```
 
+### ResourceQuota i LimitRange
+
+```bash
+kubectl get resourcequota                                          # pobierz resource quota
+kubectl describe resourcequota <nazwa-resourcequota>               # szczegóły resource quota
+kubectl get limitrange                                             # pobierz limit range
+kubectl describe limitrange <nazwa-limitrange>                     # szczegóły limit range
+```
+
 ### Volumes
 
-```
+```bash
 kubectl get pv                                                      # pobierz persistent volumes
 kubectl get pvc                                                     # pobierz persistent volume claims
 kubectl get storageclass                                            # pobierz storage classes
@@ -149,13 +158,13 @@ kubectl get storageclass                                            # pobierz st
 
 ### Service types
 
-```
+```bash
 minikube tunnel                                                     # minikube tunelowanie
 ```
 
 ### Ingress
 
-```
+```bash
 minikube addons enable ingress                                                                              # włącz addon ingress
 mkcert --key-file key.pem --cert-file cert.pem podinfo.127.0.0.1.nip.io httpbin.127.0.0.1.nip.io            # wygeneruj klucz i certyfikat za pomocą narzędzia mkcert
 kubectl create secret tls ingress-tls --key key.pem --cert cert.pem                                         # utwórz secret
@@ -163,7 +172,7 @@ kubectl create secret tls ingress-tls --key key.pem --cert cert.pem             
 
 ### StatefulSet && Headless service
 
-```
+```bash
 kubectl get sts                                                       # pobierz stateful set
 kubectl scale sts/app-staeful-set --replicas=5                        # zeskaluj stateful set
 dig app-stateful-set.default.svc.cluster.local                        # wpisy DNS dla headless service
@@ -173,12 +182,12 @@ dig app-stateful-set.default.svc.cluster.local                        # wpisy DN
 
 [Cheatsheet](https://helm.sh/docs/intro/cheatsheet/)
 
-```
+```bash
 helm install my-release oci://registry-1.docker.io/bitnamicharts/mysql -f my-values.yaml                    # instalacja z wykorzystaniem values
 helm install my-release oci://registry-1.docker.io/bitnamicharts/mysql --set prop=value                     # instalacja z wykorzystaniem set
 helm list                                                                                                   # listing zainstalowanych aplikacji (releases) w aktualnym namespace
 helm search hub podinfo                                                                                     # wyszukiwanie chart-a podinfo w hubie
-kubectl cofig set-context --current --namespace=helm
+kubectl config set-context --current --namespace=helm
 helm pull oci://ghcr.io/stefanprodan/charts/podinfo --version 6.11.0                                        # pobranie charta podinfo w konkretnej wersji
 helm pull oci://ghcr.io/stefanprodan/charts/podinfo --version 6.11.0 --untar                                # pobranie charta podinfo w konkretnej wersji z automatycznym rozpakowaniem
 helm install minikube-podinfo oci://ghcr.io/stefanprodan/charts/podinfo --version 6.11.0                    # instalacja konkretnej wersji z domyślną konfiguracją
@@ -205,7 +214,7 @@ helm install app-dev nginx                                                      
 
 ### Jobs && CronJobs
 
-```
+```bash
 kubectl create job --from=cronjob/probability-cronjob test-job-from-cronjob
 kubectl get job
 kubectl get cronjob
@@ -213,7 +222,7 @@ kubectl get cronjob
 
 ### Service account && RBAC
 
-```
+```bash
 kubectl get secret my-secret -o jsonpath='{.data.token}' | base64 --decode                                  # pobierz token z danego secreta i dekoduj base64
 kubectl get role                                                                                            # pobranie ról o zasięgu namespace
 kubectl get rolebindings                                                                                    # pobranie role bindings (zasięg namespace)
@@ -225,7 +234,7 @@ kubectl auth can-i create pod --as system:serviceaccount:default:test-sa --names
 
 ### DaemonSets && pods allocation
 
-```
+```bash
 minikube delete                                       # usunięcie klastra minikube
 minikube start --nodes 3                              # utworzenie klastra z 3 nodami
 minikube node list                                    # listing nodów minikube
@@ -239,7 +248,7 @@ kubectl taint nodes minikube-m02 role=podinfo:NoSchedule
 
 ### Gateway API
 
-```
+```bash
 kubectl kustomize "https://github.com/nginx/nginx-gateway-fabric/config/crd/gateway-api/standard?ref=v1.6.1" | kubectl apply -f -
 helm install ngf --create-namespace -n nginx-gateway --version 1.6.1 oci://ghcr.io/nginx/charts/nginx-gateway-fabric
 
