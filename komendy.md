@@ -110,7 +110,7 @@ kubectl exec -it toolbox -n tools -- bash                       # interactive sh
 
 ### Secrets
 
-```
+```bash
 kubectl create secret generic golden-train-coordinates --from-literal coordinate_x=123.45 --from-literal coordinate_y=567.43    # utwórz secret typu generic
 kubectl get secret                                                                                                              # pobierz secret
 kubectl describe secret                                                                                                         # szczególy secreta
@@ -146,6 +146,11 @@ kubectl get resourcequota                                          # pobierz res
 kubectl describe resourcequota <nazwa-resourcequota>               # szczegóły resource quota
 kubectl get limitrange                                             # pobierz limit range
 kubectl describe limitrange <nazwa-limitrange>                     # szczegóły limit range
+kubectl create --dry-run=server -f plik.yaml                       # sprawdź poprawność pliku YAML bez faktycznego tworzenia zasobu
+kubectl -n quota-demo scale deployment quota-demo --replicas=4
+kubectl -n quota-demo get deployment,pods
+kubectl -n quota-demo describe replicaset -l app=quota-demo
+kubectl -n quota-demo describe resourcequota namespace-budget
 ```
 
 ### Volumes
