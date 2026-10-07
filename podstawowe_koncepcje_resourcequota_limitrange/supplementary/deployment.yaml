@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quota-demo
+  namespace: quota-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quota-demo
+  template:
+    metadata:
+      labels:
+        app: quota-demo
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27.3
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP

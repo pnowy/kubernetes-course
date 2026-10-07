@@ -1,0 +1,17 @@
+# kubectl create --dry-run=server -f supplementary/pod-ratio-valid.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ratio-valid
+  namespace: quota-demo
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.27.3
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Mi
+        limits:
+          cpu: "200m"
+          memory: 128Mi
